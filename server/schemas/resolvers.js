@@ -4,7 +4,7 @@ const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    user: async (parent, { username }) => {
+    me: async (parent, { username }) => {
       return User.findOne({ username })
       .select("-__v -password")
     },
@@ -25,7 +25,7 @@ const resolvers = {
         throw new AuthenticationError("Incorrect credentials");
       }
 
-      const correctPw = await user.isCorrectPassword(password);
+      const correctPw = await user.isCorrectPassword(args.password);
 
       if (!correctPw) {
         throw new AuthenticationError("Incorrect credentials");
